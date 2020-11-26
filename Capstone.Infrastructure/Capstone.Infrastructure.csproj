@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20201004142918_init.cs" />
+    <Compile Remove="Migrations\20201004142918_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004153354_init.cs" />
+    <Compile Remove="Migrations\20201004153354_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004154230_init.cs" />
+    <Compile Remove="Migrations\20201004154230_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004154358_init.cs" />
+    <Compile Remove="Migrations\20201004154358_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004160302_init.cs" />
+    <Compile Remove="Migrations\20201004160302_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004160601_init.cs" />
+    <Compile Remove="Migrations\20201004160601_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004160850_init.cs" />
+    <Compile Remove="Migrations\20201004160850_init.Designer.cs" />
+    <Compile Remove="Migrations\20201004160959_init.cs" />
+    <Compile Remove="Migrations\20201004160959_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013164751_init.cs" />
+    <Compile Remove="Migrations\20201013164751_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013165656_init.cs" />
+    <Compile Remove="Migrations\20201013165656_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013165932_init.cs" />
+    <Compile Remove="Migrations\20201013165932_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013170051_init.cs" />
+    <Compile Remove="Migrations\20201013170051_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013170635_init.cs" />
+    <Compile Remove="Migrations\20201013170635_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013170758_init.cs" />
+    <Compile Remove="Migrations\20201013170758_init.Designer.cs" />
+    <Compile Remove="Migrations\20201013171856_init.cs" />
+    <Compile Remove="Migrations\20201013171856_init.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Capstone.Core\Capstone.Core.csproj" />
+  </ItemGroup>
+
+</Project>
