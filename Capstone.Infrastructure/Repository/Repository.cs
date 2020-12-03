@@ -1,6 +1,7 @@
 ﻿using Capstone.Infrastructure.Interfaces;
 using Capstone.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +46,10 @@ namespace Capstone.Infrastructure.Repository
 
             ScopedOnWriteEventAsync += context.VoidEventSaveChangesAsync;
             ScopedOnWriteManyEventAsync += context.VoidEventSaveChangesAsync;
+            ScopedOnUpdateEvent += context.VoidEventSaveChanges;
             ScopedOnDeleteEventAsync += context.VoidEventSaveChangesAsync;
             ScopedOnDeleteManyEventAsync += context.VoidEventSaveChangesAsync;
-
+            
             ScopedOnWriteEvent += context.VoidEventSaveChanges;
             ScopedOnWriteManyEvent += context.VoidEventSaveChanges;
             ScopedOnUpdateEvent += context.VoidEventSaveChanges;
@@ -58,16 +60,55 @@ namespace Capstone.Infrastructure.Repository
         public void Delete(T Entity)
         {
             _dbSet.Remove(Entity);
+            if (StaticOnDeleteEvent != null)
+                StaticOnDeleteEvent?.Invoke(Entity, this);
+            if (ScopedOnDeleteEvent != null)
+                ScopedOnDeleteEvent?.Invoke(Entity, this);
         }
 
         public void DeleteMany(params T[] Entities)
         {
             _dbSet.RemoveRange(Entities);
+            if (StaticOnDeleteManyEvent != null)
+                StaticOnDeleteManyEvent?.Invoke(Entities, this);
+            if (ScopedOnDeleteManyEvent != null)
+                ScopedOnDeleteManyEvent?.Invoke(Entities, this);
         }
 
         public void DeleteMany(ICollection<T> Entities)
         {
             _dbSet.RemoveRange(Entities);
+            if (StaticOnDeleteManyEvent != null)
+                StaticOnDeleteManyEvent?.Invoke(Entities, this);
+            if (ScopedOnDeleteManyEvent != null)
+                ScopedOnDeleteManyEvent?.Invoke(Entities, this);
+        }
+
+        public async Task DeleteAsync(T Entity)
+        {
+            _dbSet.Remove(Entity);
+            if (StaticOnDeleteEventAsync != null)
+                StaticOnDeleteEventAsync?.Invoke(Entity, this);
+            if (ScopedOnDeleteEventAsync != null)
+                ScopedOnDeleteEventAsync?.Invoke(Entity, this);
+        }
+
+        public async Task DeleteManyAsync(params T[] Entities)
+        {
+            _dbSet.RemoveRange(Entities);
+            if (StaticOnDeleteManyEventAsync != null)
+                StaticOnDeleteManyEventAsync?.Invoke(Entities, this);
+            if (ScopedOnDeleteManyEventAsync != null)
+                ScopedOnDeleteManyEventAsync?.Invoke(Entities, this);
+        }
+
+        public async Task DeleteManyAsync(ICollection<T> Entities)
+        {
+            _dbSet.RemoveRange(Entities);
+            if (StaticOnDeleteManyEventAsync != null)
+                StaticOnDeleteManyEventAsync?.Invoke(Entities, this);
+            if (ScopedOnDeleteManyEventAsync != null)
+                ScopedOnDeleteManyEventAsync?.Invoke(Entities, this);
         }
 
         public IQueryable<T> ReadAll()

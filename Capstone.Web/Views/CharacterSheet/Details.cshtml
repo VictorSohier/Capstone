@@ -1,4 +1,8 @@
-﻿@model Capstone.Core.CharacterSheet
+﻿@using Capstone.Core.Models
+@using Capstone.Infrastructure.Models
+@using Microsoft.AspNetCore.Identity
+@model Capstone.Core.Models.CharacterSheet
+@inject UserManager<CapstoneUser> _UserManager
 
 @{
     ViewData["Title"] = "Details";
@@ -265,6 +269,125 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @if (_UserManager.GetUserId(User) == Model.Author.Id)
+    {
+
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span>|</span>
+    }
     <a asp-action="Index">Back to List</a>
 </div>
+<button type="button" id="js-comment" class="js_comment" display="block">Comment</button>
+<div id="js-comment-edit-div" display="none">
+    <textarea id="js-comment-content" rows="4"/>
+    <button type="button" id="js-cancel-comment" class="js_comment">Cancel</button>
+    <button type="button" id="js-create-comment">Comment</button>
+</div>
+<div id="comments">
+    @{
+        async Task GetComments(Comment comment, int depth)
+        {
+            int em = Math.Min(depth, 2) * 4;
+            string margin = $"margin-left: {em}em";
+            <div id="@comment.Id" style=@margin>
+                <b>{comment.Author.Name}</b><br />"
+                <p>
+                    @comment.Substance
+                </p>
+            @if (_UserManager.GetUserId(User) == comment.Author.Id)
+            {
+                <a class="js-edit" value="@comment.Id">Edit</a><span>|</span>
+            }
+            @if (_UserManager.GetUserId(User) == comment.Author.Id ||
+                (await _UserManager.GetRolesAsync(await _UserManager.GetUserAsync(User))).Contains("Moderator"))
+            {
+                <a class="js-delete" value="@comment.Id">Delete</a>
+            }
+
+
+            @foreach (Comment c in comment.Comments)
+            {
+                await GetComments(c, depth + 1);
+            }
+            </div>
+            @if (_UserManager.GetUserId(User) == comment.Author.Id)
+            {
+                <div id="edit-@comment.Id" display="hidden">
+                    <textarea id="js-edit-content-@comment.Id" rows="4"/>
+                    <button class="js_commit_edit" value=@comment.Id>Edit</button>
+                </div>
+            }
+        }
+        for (int i = 0; i < Model.Comments.Count(); i++)
+        {
+            await GetComments(((List<Comment>)Model.Comments)[i], 0);
+        }
+    }
+    </div>
+<script>
+    let toggleCommentCreator = function ()
+    {
+        if ($("#js-comment-edit-div").attr("display") == "none")
+            $("#js-comment-edit-div").attr("display", "block");
+        else
+            $("#js-comment-edit-div").attr("display", "none")
+
+        if ($("#js-comment").attr("display") == "none")
+            $("#js-comment").attr("display", "block")
+        else
+            $("#js-comment").attr("display", "none")
+    }
+
+    let postComment = function ()
+    {
+        $.post("/api/Comments",
+            {
+                parentId: @Model.Id,
+                content: $("#js-comment-content").val()
+            }
+        );
+    }
+
+    let updateComment = function (commentId: string)
+    {
+        $.ajax(url: `/api/Comments/${commentId}`,
+            type: "PUT",
+            data: JSON.stringify({
+                content: $(`#js-edit-content-${commentId}`).val()
+            });
+        );
+    }
+
+    let toggleEdit = function (commentId: string)
+    {
+        if ($(`#edit-${commentId}`).attr("display") == "hidden") {
+            $(`#edit-${commentId}`).attr("display", "block")
+        }
+        else
+        {
+            $(`#edit-${commentId}`).attr("display", "hidden")
+        }
+
+        if ($(`#${commentId}`).attr("display") == "hidden") {
+            $(`#${commentId}`).attr("display", "block")
+        }
+        else {
+            $(`#${commentId}`).attr("display", "hidden")
+        }
+    }
+
+    let deleteComment = function (commentId: string)
+    {
+        $.ajax(url: `/api/comments/${commentId}`,
+            type: "DELETE");
+        $(`#${commentId}`).parent().remove(`#${commentId}`);
+    }
+
+    $(document).ready(function ()
+    {
+        $(".js_comment").click(toggleCommentCreator);
+        $("#js-create-comment").click(postComment);
+        $(".js_commit_edit").click{function(e) { updateComment(e.val());});
+        $(".js-edit").click(function (e) { toggleEdit(e.val()); });
+        $(".js-delete").click(function (e) { deleteComment(e.val()); });
+    });
+</script>

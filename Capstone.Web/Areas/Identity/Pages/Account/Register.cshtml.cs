@@ -76,7 +76,9 @@ namespace Capstone.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new CapstoneUser { UserName = Input.Email, Email = Input.Email };
+                user.AuthoredItems = new Core.Models.Author { Id = user.Id, Name = user.UserName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userManager.AddToRoleAsync(user, "stdUser");
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Capstone.Core;
 using Capstone.Core.Models;
 using Capstone.Infrastructure.Interfaces;
 using Capstone.Infrastructure.Models;
@@ -19,16 +18,19 @@ namespace Capstone.Web.Controllers
     {
         private IRepository<Author> _AuthorRepository;
         private IRepository<CharacterSheet> _CharacterSheetRepository;
+        private IRepository<Comment> _CommentsRepository;
         private UserManager<CapstoneUser> _UserManager;
 
         public CharacterSheetController(
             IRepository<Author> authorRepository,
             IRepository<CharacterSheet> characterSheetRepository,
+            IRepository<Comment> commentsRepository,
             UserManager<CapstoneUser> userManager
             )
         {
             _AuthorRepository = authorRepository;
             _CharacterSheetRepository = characterSheetRepository;
+            _CommentsRepository = commentsRepository;
             _UserManager = userManager;
         }
 
@@ -48,6 +50,7 @@ namespace Capstone.Web.Controllers
             CharacterSheet model = (await _CharacterSheetRepository
                 .ReadFilteredAsync(e => e.Id == id))
                 .Include(e => e.Author)
+                .Include(e => e.Comments)
                 .FirstOrDefault();
             if (model != null)
                 return View(model);
@@ -71,7 +74,8 @@ namespace Capstone.Web.Controllers
             if (ModelState.IsValid)
             {
                 CharacterSheet model = vmcs;
-                model.Author = (await _AuthorRepository.ReadFilteredAsync(e => e.Id == _UserManager.GetUserId(User))).First();
+                model.Author = (await _AuthorRepository.ReadFilteredAsync(e => e.Id == _UserManager.GetUserId(User))).Single();
+                model.Author.CharacterSheets.Add(model);
                 try
                 {
                     await _CharacterSheetRepository.WriteAsync(model);
@@ -92,7 +96,7 @@ namespace Capstone.Web.Controllers
         [Authorize(Roles = "StdUser")]
         public async Task<IActionResult> Edit(string id)
         {
-            CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).FirstOrDefault();
+            CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single();
             if (model != null && model.Author.Id == _UserManager.GetUserId(User))
                 return View(model);
             else if (model.Author.Id != _UserManager.GetUserId(User))
@@ -109,7 +113,7 @@ namespace Capstone.Web.Controllers
         [Authorize(Roles = "StdUser")]
         public async Task<IActionResult> Edit(string id, VMCharacterSheet vmcs)
         {
-            CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).First();
+            CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single();
             if (ModelState.IsValid && model.Author.Id == _UserManager.GetUserId(User))
             {
                 try
@@ -132,17 +136,23 @@ namespace Capstone.Web.Controllers
         [Authorize(Roles = "StdUser")]
         public async Task<IActionResult> Delete(string id)
         {
-            return View((await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).First());
+            return View((await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single());
         }
 
         // POST: CharacterSheetController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "StdUser")]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public async Task<IActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
+                CharacterSheet sheet = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single();
+                Author author = (await _UserManager.GetUserAsync(User)).AuthoredItems;
+                author.CharacterSheets.Remove(sheet);
+                await _CommentsRepository.DeleteManyAsync(sheet.Comments);
+                await _CharacterSheetRepository.DeleteAsync(sheet);
+                _AuthorRepository.Update(author);
                 return RedirectToAction(nameof(Index));
             }
             catch

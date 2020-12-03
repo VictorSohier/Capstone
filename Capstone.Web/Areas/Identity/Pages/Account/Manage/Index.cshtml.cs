@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Capstone.Core.Models;
+using Capstone.Infrastructure.Interfaces;
 using Capstone.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,12 @@ namespace Capstone.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<CapstoneUser> _userManager;
         private readonly SignInManager<CapstoneUser> _signInManager;
+        private readonly IRepository<Author> _AuthorRepository;
 
         public IndexModel(
             UserManager<CapstoneUser> userManager,
-            SignInManager<CapstoneUser> signInManager)
+            SignInManager<CapstoneUser> signInManager,
+            IRepository<Author> authorRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +37,9 @@ namespace Capstone.Web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -86,6 +93,14 @@ namespace Capstone.Web.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if (Input.UserName != user.UserName)
+            {
+                user.UserName = Input.UserName;
+                user.AuthoredItems.Name = Input.UserName;
+                await _userManager.UpdateAsync(user);
+
             }
 
             await _signInManager.RefreshSignInAsync(user);

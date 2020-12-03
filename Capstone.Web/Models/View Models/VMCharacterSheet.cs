@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Capstone.Core;
 using Capstone.Core.Enums;
+using Capstone.Core.Models;
 using Capstone.Core.Models.Value_Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using static Capstone.Core.CharacterSheet;
 
 namespace Capstone.Web.Models.View_Models
 {

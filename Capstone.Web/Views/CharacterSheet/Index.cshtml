@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Capstone.Core.CharacterSheet>
+﻿@model IEnumerable<Capstone.Core.Models.CharacterSheet>
 @using Microsoft.AspNetCore.Identity
 @using Capstone.Infrastructure.Models
-@inject UserManager<CapstoneUser> UserManager
+@inject UserManager<CapstoneUser> _UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -9,6 +9,8 @@
 
 <h1>Index</h1>
 
+<input type="text" id="search"/>
+<button type="button" id="js-search">Search</button>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -42,12 +44,13 @@
                     @Html.DisplayFor(modelItem => item.Experience)
                 </td>
                 <td>
-                    @if (UserManager.GetUserId(User) == item.Author.Id)
+                    @if (_UserManager.GetUserId(User) == item.Author.Id)
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
                     }
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    @if (UserManager.GetUserId(User) == item.Author.Id)
+                    @if (_UserManager.GetUserId(User) == item.Author.Id ||
+                        (await _UserManager.GetRolesAsync(await _UserManager.GetUserAsync(User))).Contains("Moderator"))
                     {
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     }
@@ -56,3 +59,11 @@
         }
     </tbody>
 </table>
+<script>
+    $(document).ready(function () {
+        $("#js-button").click(function () {
+            query = $("#search");
+            window.location = `/CharacterSheet/?query=${query}`;
+        });
+    });
+</script>

@@ -56,5 +56,8 @@ namespace Capstone.Infrastructure.Interfaces
         public void Delete(T Entity);
         public void DeleteMany(ICollection<T> Entities);
         public void DeleteMany(params T[] Entities);
+        public Task DeleteAsync(T Entity);
+        public Task DeleteManyAsync(ICollection<T> Entities);
+        public Task DeleteManyAsync(params T[] Entities);
     }
 }
