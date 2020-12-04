@@ -73,13 +73,13 @@ namespace Capstone.Infrastructure.Models
                 .Entity<Comment>()
                 .HasOne(e => e.Parent as Commentable)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .Entity<Commentable>()
                 .HasOne(e => e.Author)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public void VoidEventSaveChanges<T>(T obj, object sender)

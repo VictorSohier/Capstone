@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capstone.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capstone.Core", "Capstone.Core\Capstone.Core.csproj", "{AD72801C-4204-4F52-8286-C94CCA6D9B46}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capstone.Forms", "Capstone.Forms\Capstone.Forms.csproj", "{4A477449-ED2C-4525-8E64-4F3E5D4DF75D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capstone.Web", "Capstone.Web\Capstone.Web.csproj", "{4A370751-B09D-402A-81B2-51DEF8AD9818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capstone.Web", "Capstone.Web\Capstone.Web.csproj", "{4A370751-B09D-402A-81B2-51DEF8AD9818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{AD72801C-4204-4F52-8286-C94CCA6D9B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD72801C-4204-4F52-8286-C94CCA6D9B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD72801C-4204-4F52-8286-C94CCA6D9B46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A477449-ED2C-4525-8E64-4F3E5D4DF75D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A477449-ED2C-4525-8E64-4F3E5D4DF75D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A477449-ED2C-4525-8E64-4F3E5D4DF75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A477449-ED2C-4525-8E64-4F3E5D4DF75D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A370751-B09D-402A-81B2-51DEF8AD9818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A370751-B09D-402A-81B2-51DEF8AD9818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A370751-B09D-402A-81B2-51DEF8AD9818}.Release|Any CPU.ActiveCfg = Release|Any CPU

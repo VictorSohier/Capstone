@@ -27,20 +27,20 @@ namespace Capstone.Web
                     sp.GetService(typeof(RoleManager<CapstoneRole>)) as RoleManager<CapstoneRole>;
 
                 IConfiguration configuration = ((IConfiguration) sp.GetService(typeof(IConfiguration)));
-                string s = configuration.GetSection("Roles").Value;
+                //string s = configuration.GetSection("Role").Value;
                 List<string> emailsList = new List<string>();
                 for (int i = 0; configuration.GetSection($"Email{i}").Value != null; i++)
                     emailsList.Add(configuration.GetSection($"Email{i}").Value);
                 List<string> rolesList = new List<string>();
-                for (int i = 0; configuration.GetSection($"Roles{i}").Value != null; i++)
-                    rolesList.Add(configuration.GetSection($"Roles{i}").Value);
+                for (int i = 0; configuration.GetSection($"Role{i}").Value != null; i++)
+                    rolesList.Add(configuration.GetSection($"Role{i}").Value);
 
                 if (roleManager.Roles.Count() == 0)
                 {
-                    for (int i = 0; configuration.GetSection($"Roles{i}").Value != null; i++)
+                    foreach (string s in rolesList)
                     {
-                        CapstoneRole role = new CapstoneRole { Name = configuration.GetSection($"Roles{i}").Value };
-                        roleManager.CreateAsync(role);
+                        CapstoneRole role = new CapstoneRole(s);
+                        roleManager.CreateAsync(role).GetAwaiter().GetResult();
                     }
                 }
 
@@ -49,12 +49,22 @@ namespace Capstone.Web
                     for (int i = 0; configuration.GetSection($"Email{i}").Value != null; i++)
                     {
                         string email = configuration.GetSection($"Email{i}").Value;
-                        CapstoneUser user = new CapstoneUser { Email = email, UserName = email };
+                        CapstoneUser user = new CapstoneUser(email);
+                        user.Email = email;
                         Author author = new Author { Id = user.Id, Name = email };
                         user.AuthoredItems = author;
-                        userManager.CreateAsync(user, configuration.GetSection("DefaultPass").Value);
-                        userManager.AddToRoleAsync(user, roleManager.Roles.ToList()[i % roleManager.Roles.Count()].Name);
+                        user.EmailConfirmed = true;
+                        userManager.CreateAsync(user, configuration.GetSection("DefaultPass").Value).GetAwaiter().GetResult();
                     }
+                }
+
+                if (userManager.Users.Count() == 3 && roleManager.Roles.Count() == 3)
+                {
+                    userManager.AddToRolesAsync(userManager.Users.ToList()[0], rolesList).GetAwaiter().GetResult();
+                    rolesList.Remove("Admin");
+                    userManager.AddToRolesAsync(userManager.Users.ToList()[1], rolesList).GetAwaiter().GetResult();
+                    rolesList.Remove("Moderator");
+                    userManager.AddToRolesAsync(userManager.Users.ToList()[2], rolesList).GetAwaiter().GetResult();
                 }
             }
             host.Run();

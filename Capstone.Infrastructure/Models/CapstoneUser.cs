@@ -10,7 +10,17 @@ namespace Capstone.Infrastructure.Models
 {
     public class CapstoneUser : IdentityUser<string>, IBaseEntity
     {
-        public new string Id { get; set; } = Guid.NewGuid().ToString();
+        public CapstoneUser() : base()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
+        public CapstoneUser(string s) : base(s)
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
+        public override string Id { get; set; } = Guid.NewGuid().ToString();
 
         public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.UtcNow;
 

@@ -9,7 +9,17 @@ namespace Capstone.Infrastructure.Models
 {
     public class CapstoneRole : IdentityRole<string>, IBaseEntity
     {
-        public new string Id { get; set; } = Guid.NewGuid().ToString();
+        public CapstoneRole(string s) : base(s)
+        {
+
+        }
+
+        public CapstoneRole() : base()
+        {
+
+        }
+
+        public override string Id { get; set; } = Guid.NewGuid().ToString();
 
         public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.UtcNow;
     }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Capstone.Core.Models;
 
 namespace Capstone.Web.Areas.Identity.Pages.Account
 {
@@ -47,6 +48,10 @@ namespace Capstone.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -76,12 +81,12 @@ namespace Capstone.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new CapstoneUser { UserName = Input.Email, Email = Input.Email };
-                user.AuthoredItems = new Core.Models.Author { Id = user.Id, Name = user.UserName };
+                user.AuthoredItems = new Author { Id = user.Id, Name = Input.UserName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                await _userManager.AddToRoleAsync(user, "stdUser");
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, "stdUser");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

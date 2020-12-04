@@ -1,4 +1,4 @@
-﻿@model Capstone.Core.Models.CharacterSheet
+﻿@model Capstone.Web.Models.ViewModels.VMCharacterSheet
 
 @{
     ViewData["Title"] = "Edit";
@@ -9,7 +9,7 @@
 <h4>CharacterSheet</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <table>
@@ -25,7 +25,14 @@
                         <td>
                             <div class="form-group">
                                 <label asp-for="Class" class="control-label"></label>
-                                <input asp-for="Class" class="form-control" />
+                                <select asp-for="Class" class="form-control">
+                                    @{
+                                        foreach (Capstone.Core.Enums.DndClass c in Capstone.Core.Enums.DndClass.List)
+                                        {
+                                            <option value="@c">@c.Name</option>
+                                        }
+                                    }
+                                </select>
                                 <span asp-validation-for="Class" class="text-danger"></span>
                             </div>
                         </td>
@@ -39,23 +46,288 @@
                         <td>
                             <div class="form-group">
                                 <label asp-for="Race" class="control-label"></label>
-                                <input asp-for="Race" class="form-control" />
+                                <select asp-for="Race" class="form-control">
+                                    @{
+                                        foreach (Capstone.Core.Enums.RaceEnum c in Capstone.Core.Enums.RaceEnum.List)
+                                        {
+                                            <option value="@c">@c.Name</option>
+                                        }
+                                    }
+                                </select>
                                 <span asp-validation-for="Race" class="text-danger"></span>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
                                 <label asp-for="Subrace" class="control-label"></label>
-                                <input asp-for="Subrace" class="form-control" />
+                                <select asp-for="Subrace" class="form-control">
+                                    @{
+                                        foreach (Capstone.Core.Enums.SubraceEnum c in Capstone.Core.Enums.SubraceEnum.List)
+                                        {
+                                            <option value="@c">@c.Name</option>
+                                        }
+                                    }
+                                </select>
                                 <span asp-validation-for="Subrace" class="text-danger"></span>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
                                 <label asp-for="Gender" class="control-label"></label>
-                                <input asp-for="Gender" class="form-control" />
+                                <select asp-for="Gender" class="form-control">
+                                    @{
+                                        foreach (Capstone.Core.Enums.GenderEnum c in Capstone.Core.Enums.GenderEnum.List)
+                                        {
+                                            <option value="@c">@c.Name</option>
+                                        }
+                                    }
+                                </select>
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="Strength" class="control-label"></label>
+                            <input asp-for="Strength" class="form-control" />
+                            <span asp-validation-for="Strength" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Dexterity" class="control-label"></label>
+                            <input asp-for="Dexterity" class="form-control" />
+                            <span asp-validation-for="Dexterity" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Constitution" class="control-label"></label>
+                            <input asp-for="Constitution" class="form-control" />
+                            <span asp-validation-for="Constitution" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Intelligence" class="control-label"></label>
+                            <input asp-for="Intelligence" class="form-control" />
+                            <span asp-validation-for="Intelligence" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Wisdom" class="control-label"></label>
+                            <input asp-for="Wisdom" class="form-control" />
+                            <span asp-validation-for="Wisdom" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Charisma" class="control-label"></label>
+                            <input asp-for="Charisma" class="form-control" />
+                            <span asp-validation-for="Charisma" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="StrengthSavingThrow" class="control-label"></label>
+                            <input asp-for="StrengthSavingThrow" class="form-control" />
+                            <span asp-validation-for="StrengthSavingThrow" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="DexteritySavingThrow" class="control-label"></label>
+                            <input asp-for="DexteritySavingThrow" class="form-control" />
+                            <span asp-validation-for="DexteritySavingThrow" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="ConstitutionSavingThrow" class="control-label"></label>
+                            <input asp-for="ConstitutionSavingThrow" class="form-control" />
+                            <span asp-validation-for="ConstitutionSavingThrow" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="IntelligenceSavingThrow" class="control-label"></label>
+                            <input asp-for="IntelligenceSavingThrow" class="form-control" />
+                            <span asp-validation-for="IntelligenceSavingThrow" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="WisdomSavingThrow" class="control-label"></label>
+                            <input asp-for="WisdomSavingThrow" class="form-control" />
+                            <span asp-validation-for="WisdomSavingThrow" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="CharismaSavingThrow" class="control-label"></label>
+                            <input asp-for="CharismaSavingThrow" class="form-control" />
+                            <span asp-validation-for="CharismaSavingThrow" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label asp-for="StrengthDerivativeValues" class="control-label"></label>
+                            <table id="js-strength">
+                                <tbody class="js-strength-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.StrengthDerivativeKeys.Count; i++)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                <input class="js-strength-stat form-control" type="text" value="@Model.StrengthDerivativeKeys[i]" />
+                                            </td>
+                                            <td>
+                                                <input class="js-strength-value form-control" type="number" value="@Model.StrengthDerivativeValues[i]" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <input asp-for="StrengthDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="StrengthDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="StrengthDerivativeKeys" class="text-danger"></span>
+                        </td>
+                        <td colspan="2">
+                            <label asp-for="DexterityDerivativeValues" class="control-label"></label>
+                            <table id="js-dexterity">
+                                <tbody class="js-dexterity-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                </tr>
+                                @for (int i = 0; i < Model.DexterityDerivativeKeys.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input class="js-dexterity-stat form-control" type="text" value="@Model.DexterityDerivativeKeys[i]"/>
+                                        </td>
+                                        <td>
+                                            <input class="js-dexterity-value form-control" type="number" value="@Model.DexterityDerivativeValues[i]"/>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                            <input asp-for="DexterityDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="DexterityDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="DexterityDerivativeKeys" class="text-danger"></span>
+                        </td>
+                        <td colspan="2">
+                            <label asp-for="ConstitutionDerivativeValues" class="control-label"></label>
+                            <table id="js-constitution">
+                                <tbody class="js-constitution-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.ConstitutionDerivativeKeys.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input class="js-constitution-stat form-control" type="text" value="@Model.ConstitutionDerivativeKeys[i]"/>
+                                            </td>
+                                            <td>
+                                                <input class="js-constitution-value form-control" type="number" value="@Model.ConstitutionDerivativeValues[i]"/>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <input asp-for="ConstitutionDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="ConstitutionDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="ConstitutionDerivativeKeys" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label asp-for="IntelligenceDerivativeValues" class="control-label"></label>
+                            <table id="js-intelligence">
+                                <tbody class="js-intelligence-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.IntelligenceDerivativeKeys.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input class="js-intelligence-stat form-control" type="text" value="@Model.IntelligenceDerivativeKeys[i]" />
+                                            </td>
+                                            <td>
+                                                <input class="js-intelligence-value form-control" type="number" value="@Model.IntelligenceDerivativeValues[i]"/>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <input asp-for="IntelligenceDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="IntelligenceDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="IntelligenceDerivativeKeys" class="text-danger"></span>
+                        </td>
+                        <td colspan="2">
+                            <label asp-for="WisdomDerivativeValues" class="control-label"></label>
+                            <table id="js-wisdom">
+                                <tbody class="js-wisdom-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.WisdomDerivativeKeys.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input class="js-wisdom-stat form-control" type="text" value="@Model.WisdomDerivativeKeys[i]"/>
+                                            </td>
+                                            <td>
+                                                <input class="js-wisdom-value form-control" type="number" value="@Model.WisdomDerivativeValues[i]"/>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <input asp-for="WisdomDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="WisdomDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="WisdomDerivativeKeys" class="text-danger"></span>
+                        </td>
+                        <td colspan="2">
+                            <label asp-for="CharismaDerivativeValues" class="control-label"></label>
+                            <table id="js-charisma">
+                                <tbody class="js-charisma-derivatives">
+                                    <tr>
+                                        <th>
+                                            Stat
+                                        </th>
+                                        <th>
+                                            Value
+                                        </th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.CharismaDerivativeKeys.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input class="js-charisma-stat form-control" type="text" value="@Model.CharismaDerivativeKeys[i]"/>
+                                            </td>
+                                            <td>
+                                                <input class="js-charisma-value form-control" type="number" value="@Model.CharismaDerivativeValues[i]"/>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <input asp-for="CharismaDerivativeKeys" class="form-control" hidden />
+                            <input asp-for="CharismaDerivativeValues" class="form-control" hidden />
+                            <span asp-validation-for="CharismaDerivativeKeys" class="text-danger"></span>
                         </td>
                     </tr>
                     <tr>
@@ -128,7 +400,7 @@
                             <div class="form-group">
                                 <label asp-for="Proficiency" class="control-label"></label>
                                 <input asp-for="Proficiency" class="form-control" />
-                                <span asp-validation-for="Proficiency" class="text-danger"></span>
+                                <span asp-validation-for="Proficiency"></span>
                             </div>
                         </td>
                         <td>
@@ -331,10 +603,40 @@
                             </div>
                         </td>
                         <td>
-                            <div class="form-group">
+                            <div id="Proficiency-div" class="form-group">
                                 <label asp-for="WeaponAndArmorProficiencies" class="control-label"></label>
-                                <input asp-for="WeaponAndArmorProficiencies" class="form-control" />
-                                <span asp-validation-for="WeaponAndArmorProficiencies" class="text-danger"></span>
+                                @{
+                                    List<Capstone.Core.Enums.CombatProficiencies> CombatProficienciesList =
+                                        new List<Capstone.Core.Enums.CombatProficiencies>(Capstone.Core.Enums.CombatProficiencies.List);
+                                    List<Capstone.Core.Enums.CombatProficiencies> ModelCombatProficiencies =
+                                        Capstone.Core.Enums.CombatProficiencies.IntToFlagList(Model.WeaponAndArmorProficiencies);
+                                    for (int i = 0;
+                                        i < ModelCombatProficiencies.Count;
+                                        i++)
+                                    {
+                                        <select class="js-proficiency form-control">
+                                            <option value="0">--SELECT--</option>
+                                            @{
+                                                foreach (Capstone.Core.Enums.CombatProficiencies c in
+                                                                                    CombatProficienciesList.OrderBy(e => e.Value)
+                                                                                    .Where(e => !(ModelCombatProficiencies.Contains(e)
+                                                                                    && e != ModelCombatProficiencies[i])))
+                                                {
+                                                    if (c == ModelCombatProficiencies[i])
+                                                    {
+                                                        <option value=@c.Value selected>@c.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value=@c.Value>@c.Name</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+
+                                    }
+                                }
+                                <input asp-for="WeaponAndArmorProficiencies" id="Proficiency" class="form-control" hidden />
                             </div>
                         </td>
                         <td>
@@ -347,14 +649,8 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="CreationTime" class="control-label"></label>
-                <input asp-for="CreationTime" class="form-control" />
-                <span asp-validation-for="CreationTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -367,3 +663,87 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    @{
+        List<string> proficiencyNames = Capstone.Core.Enums.CombatProficiencies.List.OrderBy(e => e.Value).Select(e => e.Name).ToList();
+    }
+    let combatProficienciesNames = [
+        @for (int i = 0; i < proficiencyNames.Count(); i++)
+        {
+            if (i == proficiencyNames.Count() - 1)
+                @Html.Raw("\"" + proficiencyNames[i] + "\"")
+            else
+                @Html.Raw("\"" + proficiencyNames[i] + "\",")
+        }
+    ];
+    let manageProficienciesSelectElements = function () {
+        let valueSum = 0;
+        let elements = $(".js-proficiency");
+        elements.each(function (i, e) {
+            valueSum += parseInt($(e).children(":selected").val());
+        });
+        elements.each(function (i, e) {
+            if (parseInt($(e).children(":selected").val()) == 0)
+                $(e).remove();
+        });
+        let element = "<br/><select class=\"js-proficiency form-control\">";
+        element += "<option value=\"0\" selected>--SELECT--</option>";
+        for (var i = 0; i < combatProficienciesNames.length; i++) {
+            let check = 1 << i;
+            if ((valueSum & check) == 0) {
+                element += `<option value="${check}">` + combatProficienciesNames[i] + "</option>";
+            }
+        }
+        element += "</select>";
+        $("#Proficiency-div").append(element);
+        $("#Proficiency").val(valueSum);
+        $(".js-proficiency").each(function (i, e) { if (!($(e).attr("onchange"))) $(e).change(manageProficienciesSelectElements); });
+    }
+
+    let manageSecondaryStatTables = function (statName)
+    {
+        let capitalizedStatName = statName.replace(/^\w/, function (c) { return c.toUpperCase(); });
+        let statClass = `.js-${statName}-stat`;
+        let valueClass = `.js-${statName}-value`;
+
+        let stats = [];
+        let values = [];
+
+        $(statClass).each(function (i, e) { if ($($(valueClass)[i]).val() && $($(statClass)[i]).val()) stats.push($(e).val()); });
+        $(valueClass).each(function (i, e) { if ($($(statClass)[i]).val() && $($(valueClass)[i]).val()) values.push($(e).val()); });
+
+        $(`#${capitalizedStatName}DerivativeKeys`).val(JSON.stringify(stats));
+        $(`#${capitalizedStatName}DerivativeValues`).val(JSON.stringify(values));
+
+        $(statClass).each(function (i, e) { if (!($(e).val() || $($(valueClass)[i]).val())) $($($(e).parent()).parent()).remove(); });
+        let element = `<tr>
+                                        <td>
+                                            <input class="js-${statName}-stat form-control" type="text" />
+                                        </td>
+                                        <td>
+                                            <input class="js-${statName}-value form-control" type="number" />
+                                        </td>
+                                    </tr>`;
+        $($($($(statClass).parent()).parent()).parent()).append(element);
+        $(`.js-${statName}-stat`).each(function (i, e) { if (!($(e).attr("onchange"))) $(e).change(function () { manageSecondaryStatTables(statName); }); });
+        $(`.js-${statName}-value`).each(function (i, e) { if (!($(e).attr("onchange"))) $(e).change(function () { manageSecondaryStatTables(statName); }); });
+    }
+
+    $(document).ready(function ()
+        {
+        $(".js-proficiency").each(function (i, e) { $(e).change(manageProficienciesSelectElements); });
+        $(".js-strength-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("strength") }); });
+        $(".js-strength-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("strength") }); });
+        $(".js-dexterity-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("dexterity") }); });
+        $(".js-dexterity-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("dexterity") }); });
+        $(".js-constitution-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("constitution") }); });
+        $(".js-constitution-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("constitution") }); });
+        $(".js-intelligence-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("intelligence") }); });
+        $(".js-intelligence-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("intelligence") }); });
+        $(".js-wisdom-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("wisdom") }); });
+        $(".js-wisdom-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("wisdom") }); });
+        $(".js-charisma-stat").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("charisma") }); });
+        $(".js-charisma-value").each(function (e, e) { $(e).change(function () { manageSecondaryStatTables("charisma") }); });
+        }
+    );
+</script>

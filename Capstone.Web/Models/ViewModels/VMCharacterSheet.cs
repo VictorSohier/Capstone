@@ -6,7 +6,7 @@ using Capstone.Core.Enums;
 using Capstone.Core.Models;
 using Capstone.Core.Models.Value_Models;
 
-namespace Capstone.Web.Models.View_Models
+namespace Capstone.Web.Models.ViewModels
 {
     public class VMCharacterSheet
     {

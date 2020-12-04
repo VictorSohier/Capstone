@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Capstone.Core.Models;
 using Capstone.Infrastructure.Interfaces;
 using Capstone.Infrastructure.Models;
-using Capstone.Web.Models.View_Models;
+using Capstone.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -98,7 +98,7 @@ namespace Capstone.Web.Controllers
         {
             CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single();
             if (model != null && model.Author.Id == _UserManager.GetUserId(User))
-                return View(model);
+                return View((VMCharacterSheet) model);
             else if (model.Author.Id != _UserManager.GetUserId(User))
             {
                 return Forbid();
@@ -113,7 +113,8 @@ namespace Capstone.Web.Controllers
         [Authorize(Roles = "StdUser")]
         public async Task<IActionResult> Edit(string id, VMCharacterSheet vmcs)
         {
-            CharacterSheet model = (await _CharacterSheetRepository.ReadFilteredAsync(e => e.Id == id)).Single();
+            CharacterSheet model = vmcs;
+            model.Author = (await _UserManager.GetUserAsync(User)).AuthoredItems;
             if (ModelState.IsValid && model.Author.Id == _UserManager.GetUserId(User))
             {
                 try

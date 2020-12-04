@@ -4,14 +4,16 @@ using Capstone.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone.Infrastructure.Migrations
 {
     [DbContext(typeof(CapstoneDBContext))]
-    partial class CapstoneDBContextModelSnapshot : ModelSnapshot
+    [Migration("20201203211905_Reverted broken ondelete behavior")]
+    partial class Revertedbrokenondeletebehavior
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -26,8 +26,6 @@ namespace Capstone.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
             services.AddDbContext<CapstoneDBContext>(optionsBuilder =>
             {
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -61,6 +59,7 @@ namespace Capstone.Web
 
             services.AddRazorPages();
             services.AddControllersWithViews();
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,10 +78,9 @@ namespace Capstone.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
